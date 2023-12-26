@@ -6,19 +6,19 @@
 </head>
 <body>
     <a-scene embedded arjs>
-        <!-- Перший маркер Hiro для квадрата -->
+        <!-- Перший маркер Hiro для куба -->
         <a-marker preset="hiro">
-            <!-- Червоний квадрат -->
+            <!-- Червоний куб -->
             <a-box position="0 0.5 0" color="red" width="1" height="1" depth="1"></a-box>
         </a-marker>
 
-        <!-- Другий маркер Kanji для трикутника -->
+        <!-- Другий маркер Kanji для цилиндра -->
         <a-marker preset="kanji">
-            <!-- Синій трикутник -->
+            <!-- Синій циліндр -->
             <a-cylinder position="0 0.1 0" color="blue" radius-bottom="0" radius-top="1" height="1"></a-cone>
         </a-marker>
 
-        <!-- Третій маркер Hiro для шару -->
+        <!-- Третій маркер мій власний IR  мої перші дві букви імені для шару -->
         <a-marker type="pattern" url="pattern-ir.patt">
             <!-- Жовтий шар -->
             <a-sphere position="0 0.5 0" color="yellow" radius="0.5"></a-sphere>
