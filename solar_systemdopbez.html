@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-master.min.js"></script>
+    <script src="../libs/aframe/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <script src="solar_system.js"></script>
+</head>
+<body>
+    <a-scene>
+            <a-sky color="black" radius="2500"></a-sky>
+            <a-camera position="0 0 2000" cursor-visible="true" cursorscale="2" cursor-color="#0095DD" cursor-opacity="0.5"></a-camera>
+            <a-entity geometry="primitive: sphere; radius: 20.510" material="color: yellow" planet="dist: 0; mass: 1.989e30; name: Sun"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 2.4397" material="color: #AA5588"planet="dist: 57.910e9; mass: 3.285e23; T: 88; name: Mercury"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 6.0518" material="color: white" planet="dist: 108.2e9; mass: 4.86756e24; T: 224.7; name: Venus"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 6.371" material="color: cyan" planet="dist: 149.6e9;mass: 6e24; T: 365;name: Earth"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 3.3895" material="color: red" planet="dist: 227.939366e9; mass: 6.4171e23; T: 686.980; name: Mars"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 69.911;"material="color: white" planet="dist: 778.5e9; mass: 1.898e27; T: 4331; name: Jupiter"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 58.232;"material="color: yellow"planet="dist: 1.429e12; mass: 5.6834e26; T: 10747; name: Saturn"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 25.362;" material="color: white" planet="dist: 2.871e12; mass: 8.681e25; T: -30660; name: Uranus"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 24.622;" material="color: blue" planet="dist: 4.498e12; mass: 1.024e26; T: 60190; name: Neptune"></a-entity>
+            <a-entity geometry="primitive: sphere; radius: 1.1883;" material=" color: brown" planet="dist: 5.906e12; mass: 1.303e22; T: -90520; name: Pluto"></a-entity>
+<a-entity main></a-entity>
+     </a-scene>
+</body>
+</html> 
