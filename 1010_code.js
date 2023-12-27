@@ -1,5 +1,3 @@
-let marker_visible = { A: false, B: false, C: false, D: false };
-let points = ["A", "B", "C", "D"];
 
 AFRAME.registerComponent("registerevents", {
   init: function () {
