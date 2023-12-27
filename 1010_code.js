@@ -52,16 +52,42 @@ AFRAME.registerComponent("run", {
     console.log('Point C:', pointC.object3D.position);
     console.log('Point D:', pointD.object3D.position);
   },
-  tick: function (time, deltaTime) {
-    if (marker_visible["A"] && marker_visible["B"] && marker_visible["C"] && marker_visible["D"]) {
-      console.log("A, B, C, and D");
+ tick: function (time, deltaTime) {
+        if (marker_visible["A"] && marker_visible["B"] && marker_visible["C"] && marker_visible["D"]) {
+            this.lineAB.visible = true;
+            this.lineBC.visible = true;
+            this.lineCD.visible = true;
+            this.lineDA.visible = true;
 
-      const points = ["A", "B", "C", "D"];
-      const positions = points.map(point => {
-        const vec = new THREE.Vector3();
-        this[point].object3D.getWorldPosition(vec);
-        window['point' + point].object3D.position.copy(vec);
-        return vec;
+            const vecA = new THREE.Vector3();
+            const vecB = new THREE.Vector3();
+            const vecC = new THREE.Vector3();
+            const vecD = new THREE.Vector3();
+
+            this.A.object3D.getWorldPosition(vecA);
+            this.B.object3D.getWorldPosition(vecB);
+            this.C.object3D.getWorldPosition(vecC);
+            this.D.object3D.getWorldPosition(vecD);
+            const vidstanAB = vecA.distanceTo(vecB);
+            const vidstanBC = vecB.distanceTo(vecC);
+            const vidstanCD = vecC.distanceTo(vecD);
+            const vidstanDA = vecD.distanceTo(vecA);
+            this.lineAB.lookAt(vecB);
+            this.lineAB.scale.set(1, 1, vidstanAB);
+
+            this.lineBC.lookAt(vecC);
+            this.lineBC.scale.set(1, 1, vidstanBC);
+
+            this.lineCD.lookAt(vecD);
+            this.lineCD.scale.set(1, 1, vidstanCD);
+
+            this.lineDA.lookAt(vecA);
+            this.lineDA.scale.set(1, 1, vidstanDA);
+
+            console.log("AB = ", vidstanAB);
+            console.log("BC = ", vidstanBC);
+            console.log("CD = ", vidstanCD);
+            console.log("DA = ", vidstanDA);
       });
 
       // Створення лінії
