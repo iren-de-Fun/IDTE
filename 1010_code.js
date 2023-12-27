@@ -21,7 +21,6 @@ AFRAME.registerComponent("run", {
     this.B = document.querySelector("a-marker#B");
     this.C = document.querySelector("a-marker#C");
     this.D = document.querySelector("a-marker#D");
-    this.AB = document.querySelector("#pointA").object3D;
 
     // Створення точок на сцені
     pointA = document.createElement('a-entity');
@@ -35,10 +34,13 @@ AFRAME.registerComponent("run", {
     this.D.appendChild(pointD);
 
     // Створення лінії
-    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-    this.lineAB = new THREE.Line(new THREE.BufferGeometry(), material);
-
-    this.AB.add(this.lineAB);
+    const line = document.createElement('a-entity');
+    line.setAttribute('line', {
+      start: '0 0 0',
+      end: '0 0 0',
+      color: 'red'
+    });
+    this.A.appendChild(line);
 
     // Позначення координат у консолі
     console.log('Point A:', pointA.object3D.position);
@@ -51,16 +53,16 @@ AFRAME.registerComponent("run", {
       console.log("A, B, C, and D");
 
       const points = ["A", "B", "C", "D"];
-      const positions = points.map(point => {
+      points.forEach(point => {
         const vec = new THREE.Vector3();
         this[point].object3D.getWorldPosition(vec);
         window['point' + point].object3D.position.copy(vec);
-        return vec;
+        this[point].querySelector('a-entity[line]').setAttribute('line', {
+          start: '0 0 0',
+          end: `${vec.x} ${vec.y} ${vec.z}`,
+          color: 'red'
+        });
       });
-
-      // Створення лінії
-      this.lineAB.geometry.dispose();
-      this.lineAB.geometry = new THREE.BufferGeometry().setFromPoints(positions.concat(positions[0]));
 
       // Додаткова інформація у консолі
       console.log('Point A:', pointA.object3D.position);
@@ -68,7 +70,13 @@ AFRAME.registerComponent("run", {
       console.log('Point C:', pointC.object3D.position);
       console.log('Point D:', pointD.object3D.position);
     } else {
-      this.lineAB.geometry.dispose();
+      points.forEach(point => {
+        this[point].querySelector('a-entity[line]').setAttribute('line', {
+          start: '0 0 0',
+          end: '0 0 0',
+          color: 'red'
+        });
+      });
     }
   }
 });
