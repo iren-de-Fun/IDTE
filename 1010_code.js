@@ -1,5 +1,4 @@
 let marker_visible = { A: false, B: false, C: false, D: false };
-let pointA, pointB, pointC, pointD;
 
 AFRAME.registerComponent("registerevents", {
   init: function () {
@@ -21,41 +20,43 @@ AFRAME.registerComponent("run", {
     this.B = document.querySelector("a-marker#B");
     this.C = document.querySelector("a-marker#C");
     this.D = document.querySelector("a-marker#D");
-    this.AB = document.querySelector("#AB").object3D;
 
-    
-    pointA = document.createElement('a-entity');
-    pointB = document.createElement('a-entity');
-    pointC = document.createElement('a-entity');
-    pointD = document.createElement('a-entity');
-
-    this.A.appendChild(pointA);
-    this.B.appendChild(pointB);
-    this.C.appendChild(pointC);
-    this.D.appendChild(pointD);
-
-    
-    console.log('Point A:', pointA.object3D.position);
-    console.log('Point B:', pointB.object3D.position);
-    console.log('Point C:', pointC.object3D.position);
-    console.log('Point D:', pointD.object3D.position);
+    // Створення ліній між точками
+    this.createLine(this.A, this.B, "lineAB");
+    this.createLine(this.B, this.C, "lineBC");
+    this.createLine(this.C, this.D, "lineCD");
+    this.createLine(this.D, this.A, "lineDA");
+  },
+  createLine: function (point1, point2, lineName) {
+    const line = document.createElement('a-entity');
+    line.setAttribute('line', { color: 'red' });
+    point1.appendChild(line);
+    this[lineName] = line;
   },
   tick: function (time, deltaTime) {
     if (marker_visible["A"] && marker_visible["B"] && marker_visible["C"] && marker_visible["D"]) {
       console.log("A, B, C, and D");
 
-      const points = ["A", "B", "C", "D"];
-      points.forEach(point => {
-        const vec = new THREE.Vector3();
-        this[point].object3D.getWorldPosition(vec);
-        window['point' + point].object3D.position.copy(vec);
-      });
+      const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
 
-      
-      console.log('Point A:', pointA.object3D.position);
-      console.log('Point B:', pointB.object3D.position);
-      console.log('Point C:', pointC.object3D.position);
-      console.log('Point D:', pointD.object3D.position);
+      for (const lineName of lines) {
+        const line = this[lineName];
+        const startPoint = line.parentElement.object3D.position;
+        const endPoint = line.parentElement.querySelector("a-marker").object3D.position;
+
+        line.setAttribute('line', {
+          start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
+          end: `${endPoint.x} ${endPoint.y} ${endPoint.z}`,
+          color: 'red'
+        });
+      }
+    } else {
+      // Сховати лінії, якщо не всі точки видимі
+      const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
+      lines.forEach(lineName => {
+        const line = this[lineName];
+        line.setAttribute('line', { color: 'red' });
+      });
     }
   }
 });
