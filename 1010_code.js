@@ -1,5 +1,3 @@
-let marker_visible = { A: false, B: false, C: false, D: false };
-
 AFRAME.registerComponent("registerevents", {
   init: function () {
     var marker = this.el;
@@ -21,7 +19,6 @@ AFRAME.registerComponent("run", {
     this.C = document.querySelector("a-marker#C");
     this.D = document.querySelector("a-marker#D");
 
-    // Створення ліній між точками
     this.createLine(this.A, this.B, "lineAB");
     this.createLine(this.B, this.C, "lineBC");
     this.createLine(this.C, this.D, "lineCD");
@@ -29,7 +26,7 @@ AFRAME.registerComponent("run", {
   },
   createLine: function (point1, point2, lineName) {
     const line = document.createElement('a-entity');
-    line.setAttribute('line', { color: 'red' });
+    line.setAttribute('line', { start: '0 0 0', end: '0 0 0', color: 'red' });
     point1.appendChild(line);
     this[lineName] = line;
   },
@@ -42,7 +39,7 @@ AFRAME.registerComponent("run", {
       for (const lineName of lines) {
         const line = this[lineName];
         const startPoint = line.parentElement.object3D.position;
-        const endPoint = line.parentElement.querySelector("a-marker").object3D.position;
+        const endPoint = line.parentElement.components[lineName.slice(4)].object3D.position;
 
         line.setAttribute('line', {
           start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
@@ -55,7 +52,7 @@ AFRAME.registerComponent("run", {
       const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
       lines.forEach(lineName => {
         const line = this[lineName];
-        line.setAttribute('line', { color: 'red' });
+        line.setAttribute('line', { start: '0 0 0', end: '0 0 0', color: 'red' });
       });
     }
   }
