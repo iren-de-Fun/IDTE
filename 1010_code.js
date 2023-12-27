@@ -39,10 +39,12 @@ AFRAME.registerComponent("run", {
 
       const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
 
-      for (const lineName of lines) {
+      for (let i = 0; i < lines.length; i++) {
+        const lineName = lines[i];
         const line = this[lineName];
         const startPoint = line.parentElement.object3D.position;
-        const endPoint = line.parentElement.components[lineName].end.clone();
+        const nextLineName = lines[(i + 1) % lines.length];
+        const endPoint = line.parentElement.components[nextLineName].end.clone();
 
         line.setAttribute('line', {
           start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
