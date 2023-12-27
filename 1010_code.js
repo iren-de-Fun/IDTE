@@ -37,8 +37,14 @@ AFRAME.registerComponent("run", {
     // Створення лінії
     const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
     this.lineAB = new THREE.Line(new THREE.BufferGeometry(), material);
+    this.lineBC = new THREE.Line(new THREE.BufferGeometry(), material);
+    this.lineCD = new THREE.Line(new THREE.BufferGeometry(), material);
+    this.lineDA = new THREE.Line(new THREE.BufferGeometry(), material);
 
     this.AB.add(this.lineAB);
+    this.BC.add(this.lineAB);
+    this.CD.add(this.lineAB);
+    this.DA.add(this.lineAB);
 
     // Позначення координат у консолі
     console.log('Point A:', pointA.object3D.position);
