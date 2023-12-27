@@ -43,8 +43,8 @@ AFRAME.registerComponent("run", {
         const lineName = lines[i];
         const line = this[lineName];
         const startPoint = line.parentElement.object3D.position;
-        const nextLineName = lines[(i + 1) % lines.length];
-        const endPoint = line.parentElement.components[nextLineName].end.clone();
+        const nextPointName = lines[(i + 1) % lines.length];
+        const endPoint = this[nextPointName].object3D.position;
 
         line.setAttribute('line', {
           start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
