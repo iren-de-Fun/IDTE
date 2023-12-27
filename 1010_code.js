@@ -41,25 +41,27 @@ AFRAME.registerComponent("run", {
     console.log('Point D:', pointD.object3D.position);
   },
   tick: function (time, deltaTime) {
-    if (marker_visible["A"] && marker_visible["B"] && marker_visible["C"] && marker_visible["D"]) {
-      console.log("A, B, C, and D");
+  if (marker_visible["A"] && marker_visible["B"] && marker_visible["C"] && marker_visible["D"]) {
+    console.log("A, B, C, and D");
 
-      const points = ["A", "B", "C", "D"];
-      const positions = points.map(point => {
-        const vec = new THREE.Vector3();
-        this[point].object3D.getWorldPosition(vec);
-        window['point' + point].object3D.position.copy(vec);
-      });
+    const points = ["A", "B", "C", "D"];
+    const positions = points.map(point => {
+      const vec = new THREE.Vector3();
+      this[point].object3D.getWorldPosition(vec);
+      window['point' + point].object3D.position.copy(vec);
+      return vec;
+    });
 
-      this.lineAB.visible = true;
+    this.lineAB.visible = true;
 
-      this.lineAB.geometry.dispose();
-      this.lineAB.geometry = new THERE.BufferGeometry().setFromPoints(positions.concat(positions[0]));
-      
-      console.log('Point A:', pointA.object3D.position);
-      console.log('Point B:', pointB.object3D.position);
-      console.log('Point C:', pointC.object3D.position);
-      console.log('Point D:', pointD.object3D.position);
+    this.lineAB.geometry.dispose();
+    this.lineAB.geometry = new THREE.BufferGeometry().setFromPoints(positions);
+
+    // Додаткова інформація у консолі
+    console.log('Point A:', pointA.object3D.position);
+    console.log('Point B:', pointB.object3D.position);
+    console.log('Point C:', pointC.object3D.position);
+    console.log('Point D:', pointD.object3D.position);
   } else {
     this.lineAB.visible = false;
   }
