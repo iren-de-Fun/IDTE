@@ -29,7 +29,7 @@ AFRAME.registerComponent("run", {
   },
   createLine: function (point1, point2, lineName) {
     const line = document.createElement('a-entity');
-    line.setAttribute('line', { start: '0 0 0', end: '0 0 0', color: 'red' });
+    line.setAttribute('line', { color: 'red' });
     point1.appendChild(line);
     this[lineName] = line;
   },
@@ -42,7 +42,7 @@ AFRAME.registerComponent("run", {
       for (const lineName of lines) {
         const line = this[lineName];
         const startPoint = line.parentElement.object3D.position;
-        const endPoint = line.parentElement.components[lineName.slice(4)].object3D.position;
+        const endPoint = line.parentElement.querySelector("a-marker").object3D.position;
 
         line.setAttribute('line', {
           start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
@@ -55,7 +55,7 @@ AFRAME.registerComponent("run", {
       const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
       lines.forEach(lineName => {
         const line = this[lineName];
-        line.setAttribute('line', { start: '0 0 0', end: '0 0 0', color: 'red' });
+        line.setAttribute('line', { color: 'red' });
       });
     }
   }
