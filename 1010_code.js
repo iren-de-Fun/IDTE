@@ -45,17 +45,22 @@ AFRAME.registerComponent("run", {
       console.log("A, B, C, and D");
 
       const points = ["A", "B", "C", "D"];
-      points.forEach(point => {
+      const positions = points.map(point => {
         const vec = new THREE.Vector3();
         this[point].object3D.getWorldPosition(vec);
         window['point' + point].object3D.position.copy(vec);
       });
 
+      this.lineAB.visible = true;
+
+      this.lineAB.geometry.dispose();
+      this.lineAB.geometry = new THERE.BufferGeometry().setFromPoints(positions.concat(positions[0]));
       
       console.log('Point A:', pointA.object3D.position);
       console.log('Point B:', pointB.object3D.position);
       console.log('Point C:', pointC.object3D.position);
       console.log('Point D:', pointD.object3D.position);
-    }
+  } else {
+    this.lineAB.visible = false;
   }
-});
+}
