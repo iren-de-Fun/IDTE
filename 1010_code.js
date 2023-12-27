@@ -23,6 +23,11 @@ AFRAME.registerComponent("run", {
     this.D = document.querySelector("a-marker#D");
     this.AB = document.querySelector("#pointA").object3D;
 
+    const geometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 32);
+        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0.5, 0));
+        geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(Math.PI / 2));
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
     // Створення точок на сцені
     pointA = document.createElement('a-entity');
     pointB = document.createElement('a-entity');
