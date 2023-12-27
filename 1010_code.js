@@ -22,28 +22,25 @@ AFRAME.registerComponent("run", {
     this.C = document.querySelector("a-marker#C");
     this.D = document.querySelector("a-marker#D");
 
-    // Створення точок на сцені
-    pointA = document.createElement('a-entity');
-    pointB = document.createElement('a-entity');
-    pointC = document.createElement('a-entity');
-    pointD = document.createElement('a-entity');
+pointA = document.createElement('a-entity');
+pointB = document.createElement('a-entity');
+pointC = document.createElement('a-entity');
+pointD = document.createElement('a-entity');
 
     this.A.appendChild(pointA);
     this.B.appendChild(pointB);
     this.C.appendChild(pointC);
     this.D.appendChild(pointD);
 
-    // Створення ліній
-    this.createLine(this.A, this.B, "lineAB");
-    this.createLine(this.B, this.C, "lineBC");
-    this.createLine(this.C, this.D, "lineCD");
-    this.createLine(this.D, this.A, "lineDA");
-
-    // Позначення координат у консолі
-    console.log('Point A:', this.A.object3D.position);
-    console.log('Point B:', this.B.object3D.position);
-    console.log('Point C:', this.C.object3D.position);
-    console.log('Point D:', this.D.object3D.position);
+  this.createLine(this.A, this.B, "lineAB");
+this.createLine(this.B, this.C, "lineBC");
+this.createLine(this.C, this.D, "lineCD");
+this.createLine(this.D, this.A, "lineDA");
+    
+console.log('Point A:', this.A.object3D.position);
+console.log('Point B:', this.B.object3D.position);
+  console.log('Point C:', this.C.object3D.position);
+  console.log('Point D:', this.D.object3D.position);
   },
   createLine: function (point1, point2, lineName) {
     const line = document.createElement('a-entity');
@@ -71,7 +68,7 @@ AFRAME.registerComponent("run", {
         });
       }
     } else {
-      // Сховати лінії, якщо не всі точки видимі
+    
       const lines = ["lineAB", "lineBC", "lineCD", "lineDA"];
       lines.forEach(lineName => {
         const line = this[lineName];
