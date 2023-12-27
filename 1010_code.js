@@ -42,7 +42,7 @@ AFRAME.registerComponent("run", {
       for (const lineName of lines) {
         const line = this[lineName];
         const startPoint = line.parentElement.object3D.position;
-        const endPoint = line.parentElement.querySelector("a-marker").object3D.position;
+        const endPoint = line.parentElement.components[lineName].end.clone();
 
         line.setAttribute('line', {
           start: `${startPoint.x} ${startPoint.y} ${startPoint.z}`,
