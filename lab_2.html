@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.159.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.159.0/examples/jsm/"
+    }
+  }
+</script>
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+
+const loader = new GLTFLoader();
+        let scene, camera, renderer, controls, spheres = [];
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 40;
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+
+            let textureLoader = new THREE.TextureLoader();
+            let texture = textureLoader.load('disturb.jpg');
+
+            let centralSphere = new THREE.Mesh(
+                new THREE.SphereGeometry(1, 32, 32),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+            scene.add(centralSphere);
+
+            let sphereMaterial = new THREE.MeshBasicMaterial({ color: 'mediumseagreen' });
+            let radii = [10, 15, 20];
+            let speeds = [0.0002, 0.0001, 0.0003];
+            let angles = [180, -180, 0];
+
+radii.forEach((radius, index) => {
+    let sphereGeometry = new THREE.SphereGeometry(0.25, 32, 32);
+    let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.x = radius;
+    scene.add(sphere);
+    spheres.push({ sphere, radius, speed: speeds[index], angle: angles[index] });
+
+    let torusGeometry = new THREE.TorusGeometry(radius, 0.05, 16, 100);
+    let torusMaterial = new THREE.MeshBasicMaterial({ color: 0x555555, transparent: true, opacity: 0.5 });
+    let torus = new THREE.Mesh(torusGeometry, torusMaterial);
+
+    
+    torus.rotation.y = angles[index] * -1;
+
+    scene.add(torus);
+});
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            spheres.forEach(obj => {
+                let angle = obj.angle;
+                obj.sphere.position.x = obj.radius * Math.cos(Date.now() * obj.speed) * Math.cos(angle);
+                obj.sphere.position.y = obj.radius * Math.sin(Date.now() * obj.speed);
+                obj.sphere.position.z = obj.radius * Math.cos(Date.now() * obj.speed) * Math.sin(angle);
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            controls.update();
+        }
+
+        init();
+    </script>
+</body>
+</html>
+

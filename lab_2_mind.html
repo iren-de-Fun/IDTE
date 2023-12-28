@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        html, body {
+            position: relative;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script type="importmap">
+    {
+      "imports": {
+    "three": "https://unpkg.com/three@0.153.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.153.0/examples/jsm/",
+    "mindar-image-three":"https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-three.prod.js"
+      }
+    }
+    </script>
+</head>
+<body>
+<script type="module">
+      import * as THREE from 'three';
+      import { MindARThree } from 'mindar-image-three';
+let scene, camera, renderer, controls, spheres = [];
+
+
+        const start = async () => {
+            const mindarThree = new MindARThree({
+                container: document.body,
+                imageTargetSrc: "./Rutherford.mind",
+                maxTrack: 1,
+                uiLoading: "no", 
+                uiScanning: "yes", 
+                uiError: "yes"
+            });
+            const { scene, camera, renderer } = mindarThree;
+            const anchor = mindarThree.addAnchor(0);
+
+
+
+            let textureLoader = new THREE.TextureLoader();
+            let texture = textureLoader.load('disturb.jpg');
+
+            let centralSphere = new THREE.Mesh(
+                new THREE.SphereGeometry(1, 32, 32),
+                new THREE.MeshBasicMaterial({ map: texture })
+            );
+             anchor.group.add(centralSphere);
+
+            let sphereMaterial = new THREE.MeshBasicMaterial({ color: 'mediumseagreen' });
+            let radii = [10, 15, 20];
+            let speeds = [0.0002, 0.0001, 0.0003];
+            let angles = [180, -180, 0];
+
+radii.forEach((radius, index) => {
+    let sphereGeometry = new THREE.SphereGeometry(0.25, 32, 32);
+    let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.x = radius;
+     
+    spheres.push({ sphere, radius, speed: speeds[index], angle: angles[index] });
+    anchor.group.add(sphere);
+
+    // Візуалізація траєкторій за допомогою тонких торів
+    let torusGeometry = new THREE.TorusGeometry(radius, 0.05, 16, 100);
+    let torusMaterial = new THREE.MeshBasicMaterial({ color: 0x555555, transparent: true, opacity: 0.5 });
+    let torus = new THREE.Mesh(torusGeometry, torusMaterial);
+
+    // Поворот тора для відповідності нахилу кульки
+    //let angleInRadians = angles[index];
+   // torus.rotation.x = Math.PI / 2;
+    torus.rotation.y = angles[index] * -1;
+
+     anchor.group.add(torus);
+});
+
+ const animate = () => {
+                requestAnimationFrame(animate);
+
+                spheres.forEach(obj => {
+                let angle = obj.angle;
+                obj.sphere.position.x = obj.radius * Math.cos(Date.now() * obj.speed) * Math.cos(angle);
+                obj.sphere.position.y = obj.radius * Math.sin(Date.now() * obj.speed);
+                obj.sphere.position.z = obj.radius * Math.cos(Date.now() * obj.speed) * Math.sin(angle);
+            });
+renderer.render(scene, camera);
+            };
+await mindarThree.start();
+            animate();
+        };
+
+        start();
+    </script>
+</body>
+</html>
+
+
+
+
+
